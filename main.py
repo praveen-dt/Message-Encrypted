@@ -30,11 +30,27 @@ def decrypt_data(encrypted_data: str, password: str) -> str:
     fernet = Fernet(urlsafe_b64encode(key))
     return fernet.decrypt(encrypted_message).decode()
 
+def save_to_file(data: str, encmsg: str):
+    with open(encmsg, 'w') as file:
+        file.write(data)
+
+def read_from_file(encmsg: str) -> str:
+    with open(encmsg, 'r') as file:
+        return file.read()
+
 # Example usage
 words = ["enroll", "tuition"]
 password = "PASSWORD"
 encrypted_message = encrypt_data(' '.join(words), password)
-print("Encrypted Message:", encrypted_message)
 
-decrypted_message = decrypt_data(encrypted_message, password)
+encmsg = 'encrypted_message.txt'
+save_to_file(encrypted_message, encmsg)
+
+# Read the encrypted message from a file
+read_encrypted_message = read_from_file(encmsg)
+
+# Decrypt the message
+decrypted_message = decrypt_data(read_encrypted_message, password)
+print("Encrypted Message:", read_encrypted_message)
 print("Decrypted Message:", decrypted_message)
+
